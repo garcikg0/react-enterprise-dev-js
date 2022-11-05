@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Redux reducers - products reducer</title>
+	<style>
+		body {
+			font-family: Calibre, sans-serif;
+		}
+	</style>
+</head>
+<body>
+
+	<h1>See console for output</h1>
+
+	<script>
+
+		// Reducer for products.
+		function products(state=[], action) {
+			
+			switch (action.type) {
+			
+				case "ADD_PRODUCT" :
+					return [...state, {...action.payload}]
+			
+					case "LIKE_PRODUCT" :
+						return state.map(p => 
+							(p.id === action.payload.id)
+								? {...p, likes: p.likes+1, mostRecentLike: new Date()}
+								: p
+						)
+			
+					case "REMOVE_PRODUCT" :
+						return state.filter(
+							p => p.id !== action.payload.id
+						)
+			
+					default:
+						return state
+			}
+		}
+
+		let currentProducts = [
+			{
+				id: 1,
+				description: "Swansea City Shirt",
+				price: 55.99,
+				likes: 0,
+				mostRecentLike: undefined
+			}
+		]
+		console.log(currentProducts)
+
+		// For the products reducer, test the ADD_PRODUCT action.
+		let action =  {
+			type: "ADD_PRODUCT",
+			payload: {
+				id: 2,
+				description: "Cardiff City Shirt",
+				price: 1.99,
+				likes: 0,
+				mostRecentLike: undefined
+			}
+		}
+		let newProducts = products(currentProducts, action)
+		console.log(newProducts)
+
+		// For the products reducer, test the LIKE_PRODUCT action.
+		action = {
+			type: "LIKE_PRODUCT",
+			payload: {
+				id: 2
+			}
+		}
+		newProducts = products(newProducts, action)
+		console.log(newProducts)
+
+		// For the products reducer, test the REMOVE_PRODUCT action.
+		action = {
+			type: "REMOVE_PRODUCT",
+			payload: {
+				id: 2
+			}
+		}
+		newProducts = products(newProducts, action)
+		console.log(newProducts)
+
+	</script>
+</body>
+</html>

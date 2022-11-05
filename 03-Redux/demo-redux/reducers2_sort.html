@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Redux reducers - sort reducer</title>
+	<style>
+		body {
+			font-family: Calibre, sans-serif;
+		}
+	</style>
+</head>
+<body>
+
+	<h1>See console for output</h1>
+
+	<script>
+
+		function sort(state="SORTED_BY_DESCRIPTION", action) {
+			switch (action.type) {
+				case "SORT_PRODUCTS":
+					return action.payload.sortBy
+				default :
+					return state
+			}
+		}
+
+		let state = "SORTED_BY_DESCRIPTION"
+
+		let action =  {
+			type: "SORT_PRODUCTS",
+			payload: {
+				sortBy: "SORTED_BY_PRICE"
+		   	}
+		}
+		let nextState = sort(state, action)
+		console.log(nextState)
+
+		action = {
+		   	type: "SORT_PRODUCTS",
+		   	payload: {
+				sortBy: "SORTED_BY_RATING"
+			}
+		}
+		nextState = sort(nextState, action)
+		console.log(nextState)
+
+		action = {
+		   	type: "SORT_PRODUCTS",
+		   	payload: {
+				sortBy: "SORTED_BY_LIKES"
+			}
+		}
+		nextState = sort(nextState, action)
+		console.log(nextState)
+
+	</script>
+</body>
+</html>

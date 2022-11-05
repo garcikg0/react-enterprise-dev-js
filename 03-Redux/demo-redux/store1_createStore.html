@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Redux store - creating the store</title>
+	<style>
+		body {
+			font-family: Calibre, sans-serif;
+		}
+	</style>
+
+    <script src="https://unpkg.com/redux@4.0.5/dist/redux.min.js"></script>
+
+</head>
+<body>
+
+    <h1>See console for output</h1>
+    
+    <script>
+
+		// Initial state for the Redux store.
+		const initialState = {
+			products: [
+				{
+					id: 1,
+					description: "Swansea City Shirt",
+					price: 55.99,
+					likes: 0,
+					mostRecentLike: undefined
+				},
+				{
+					id: 2,
+					description: "Cardiff City Shirt",
+					price: 1.99,
+					likes: 0,
+					mostRecentLike: undefined
+				},
+				{
+					id: 3,
+					description: "Bugatti Divo",
+					price: 4000000,
+					likes: 0,
+					mostRecentLike: undefined
+				}
+			],
+			sort: "SORTED_BY_DESCRIPTION"
+		}
+		
+		// Reducer for products - same as before.
+		function products(state=[], action) {
+			
+			switch (action.type) {
+			
+				case "ADD_PRODUCT" :
+					return [...state, {...action.payload}]
+			
+					case "LIKE_PRODUCT" :
+						return state.map(p => 
+							(p.id === action.payload.id)
+								? {...p, likes: p.likes+1, mostRecentLike: new Date()}
+								: p
+						)
+			
+					case "REMOVE_PRODUCT" :
+						return state.filter(
+							p => p.id !== action.payload.id
+						)
+			
+					default:
+						return state
+			}
+		}
+
+        // Reducer for sort - same as before.
+		function sort(state="SORTED_BY_DESCRIPTION", action) {
+			switch (action.type) {
+				case "SORT_PRODUCTS":
+					return action.payload.sortBy
+				default :
+					return state
+			}
+		}
+
+		// Create the Redux store, with a combination of all top-level reducers and state.
+		const store = Redux.createStore(
+			Redux.combineReducers({products, sort}),
+			initialState
+		)
+        
+        // Get the state from the Redux store.
+        console.log(store.getState())
+
+    </script>
+</body>
+</html>
